@@ -31,7 +31,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 is Result.Success->{
                     binding.progressBar.visibility = View.GONE
                     Log.d("result", "${result.data}")
-
+                    binding.rvHome.adapter = HomeAdapter(requireContext(),result.data)
                 }
                 is Result.Failure->{
                     binding.progressBar.visibility = View.GONE
