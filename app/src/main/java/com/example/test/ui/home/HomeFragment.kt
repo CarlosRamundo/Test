@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.test.R
 import com.example.test.core.Result
+import com.example.test.data.model.DeviceItem
 import com.example.test.data.remote.HomeDataSource
 import com.example.test.databinding.FragmentHomeBinding
 import com.example.test.presentation.home.HomeViewModel
@@ -31,7 +33,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 is Result.Success->{
                     binding.progressBar.visibility = View.GONE
                     Log.d("result", "${result.data}")
-                    binding.rvHome.adapter = HomeAdapter(requireContext(),result.data)
+                    binding.rvHome.adapter = HomeAdapter(result.data){deviceSelected->onClickDevice(deviceSelected)}
                 }
                 is Result.Failure->{
                     binding.progressBar.visibility = View.GONE
@@ -39,5 +41,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
         })
+    }
+    fun onClickDevice(deviceSelected:DeviceItem){
+        val action = HomeFragmentDirections.actionHomeFragmentToDeviceDetailFragment(
+            deviceSelected.name,
+            deviceSelected.mainImage.url,
+            deviceSelected.installmentsTag,
+            deviceSelected.topTag
+        )
+        findNavController().navigate(action)
     }
 }

@@ -10,7 +10,7 @@ import com.example.test.data.model.Device
 import com.example.test.data.model.DeviceItem
 import com.example.test.databinding.DeviceItemBinding
 
-class HomeAdapter(private val context: Context, private val deviceList: Device) :
+class HomeAdapter(private val deviceList: Device, private val onClickListener:(DeviceItem)-> Unit) :
     RecyclerView.Adapter<BaseViewHolder<*>>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val itemBinding =
@@ -22,7 +22,7 @@ class HomeAdapter(private val context: Context, private val deviceList: Device) 
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
         when (holder) {
-            is HomeViewHolder -> holder.bind(deviceList[position])
+            is HomeViewHolder -> holder.bind(deviceList[position], onClickListener)
         }
     }
 
@@ -32,11 +32,20 @@ class HomeAdapter(private val context: Context, private val deviceList: Device) 
 
     inner class HomeViewHolder(val binding: DeviceItemBinding, val context: Context) :
         BaseViewHolder<DeviceItem>(binding.root) {
+
         override fun bind(item: DeviceItem) {
             Glide.with(context).load(item.mainImage.url).centerCrop().into(binding.deviceImage)
             binding.deviceName.text = item.name
             binding.installmentsTag.text = item.installmentsTag
             binding.topTag.text = item.topTag
+        }
+
+        override fun bind(t: DeviceItem, onClickListener: (DeviceItem) -> Unit) {
+            Glide.with(context).load(t.mainImage.url).centerCrop().into(binding.deviceImage)
+            binding.deviceName.text = t.name
+            binding.installmentsTag.text = t.installmentsTag
+            binding.topTag.text = t.topTag
+            itemView.setOnClickListener { onClickListener(t)}
         }
     }
 

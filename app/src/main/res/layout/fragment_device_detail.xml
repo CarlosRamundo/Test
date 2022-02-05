@@ -8,10 +8,10 @@
     tools:context=".ui.device.DeviceDetailFragment">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/device_image"
         android:layout_width="120dp"
         android:layout_height="170dp">
         <ImageView
+            android:id="@+id/device_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
